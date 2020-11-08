@@ -32,7 +32,7 @@ private readonly IServiceRepo _repository2;
         /// Get all organizations
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("/Organization")]
       public ActionResult <IEnumerable<ReadOrganizations>> GetAllOrganizations()
       {
           var orgItems = _repository.GetAllOrganizations();
@@ -98,7 +98,7 @@ private readonly IServiceRepo _repository2;
         /// <param name="org"></param>
         /// <returns></returns>
     //   POST api/songs
-    [HttpPost]
+    [HttpPost("/Organization")]
     public ActionResult <Organization> CreateOrganization(Organization org){
         // var songModel = _mapper.Map<Song>(songCreateDto);
       
@@ -192,7 +192,7 @@ private readonly IServiceRepo _repository2;
         /// <param name="orgUpdate"></param>
         /// <returns></returns>
     //PUT api/CSP/{id}
-    [HttpPut("{id}")]
+    [HttpPut(/Organization/Update/{id}")]
     public ActionResult UpdateOrganizationById(int id, ReadOrganizations orgUpdate)
     {
         var orgModelFromRepo = _repository.GetOrganizationById(id);
@@ -280,7 +280,7 @@ public ActionResult DeleteOrganizationbyId(int id)
         /// <param name="id"></param>
         /// <returns></returns>
 // DELETE api/Organization/{id}
-[HttpDelete("{name}")]
+[HttpDelete("/Organization/Delete/{name}")]
 public ActionResult DeleteOrganizationbyName(string name)
 {
     var orgId= _repository.GetOrganizationByName(name).Id;
