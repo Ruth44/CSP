@@ -15,6 +15,9 @@ namespace CSP.Data
         Task<User> AddAsync(User user);
         User GetUserById(int id);
         User GetUserByName(string name);
+                void UpdateUser(User org);
+        bool SaveChanges();
+
         Task<IEnumerable<User>> FindByAsync(AuthenticateUser authUserVM);
     }
 }

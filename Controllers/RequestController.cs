@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using CSP.Models;
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace CSP.Controllers
 {
@@ -38,7 +39,7 @@ private readonly IUserRepo _userService;
         /// <param name="userId"></param>
         /// <returns></returns>
     //   POST api/songs
-    [HttpPost("/{userId}")]
+    [HttpPost("request/{userId}")]
     public ActionResult <CreateRequest> CreateNewRequest(int userId,CreateRequest req){
 int id=_repository2.GetServiceByName(req.ServiceName).Id;
          var reqModel = _mapper.Map<Request>(req);
@@ -74,7 +75,31 @@ foreach(var req in requestss)
                
           return Ok(requests);
       }
+       /// Update part of a Request
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+       //PATCH api/CSP/{id}
+    
+    [HttpPatch("/ById/{id}")]
+    public ActionResult PartialOrganizationUpdate(int id, JsonPatchDocument<CreateRequest> patchDoc)
+{
+      var orgModelFromRepo = _request.GetRequestById(id);
+        if(orgModelFromRepo == null){
+            return NotFound();
+        }
+        var orgToPatch = _mapper.Map<CreateRequest>(orgModelFromRepo);
+        patchDoc.ApplyTo(orgToPatch, ModelState);
+        if(!TryValidateModel(orgToPatch))
+        {
+            return ValidationProblem(ModelState);
+        }
+      _mapper.Map(orgToPatch, orgModelFromRepo);
+      _request.UpdateRequest(orgModelFromRepo);
+      _request.SaveChanges();
+      return NoContent();
 
+}
  /// <summary>
         /// Get Request with Service Name
         /// </summary>

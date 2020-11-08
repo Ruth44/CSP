@@ -82,5 +82,14 @@ namespace CSP.Data
             }
             catch (Exception e) { throw e; }
         }
+
+        void IUserRepo.UpdateUser(User org)
+        {
+
+        }
+         public bool SaveChanges()
+        {
+          return (_context.SaveChanges() >= 0);
+        }
     }
 }

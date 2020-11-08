@@ -5,6 +5,7 @@ using CSP.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 using CSP.Models;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace CSP.Controllers
 {
@@ -47,7 +48,7 @@ private readonly IUserRepo _userService;
         /// <param name="org"></param>
         /// <returns></returns>
     //   POST api/songs
-    [HttpPost]
+    [HttpPost("/Organization")]
     public ActionResult <Organization> CreateOrganization(Organization org){
         
         _repository.CreateOrg(org);
@@ -73,6 +74,31 @@ private readonly IUserRepo _userService;
         _repository.SaveChanges();
         return NoContent();
     }
+     /// Update part of an organization
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+       //PATCH api/CSP/{id}
+    
+    [HttpPatch("{id}")]
+    public ActionResult PartialOrganizationUpdate(int id, JsonPatchDocument<ReadOrganizations> patchDoc)
+{
+      var orgModelFromRepo = _repository.GetOrganizationById(id);
+        if(orgModelFromRepo == null){
+            return NotFound();
+        }
+        var orgToPatch = _mapper.Map<ReadOrganizations>(orgModelFromRepo);
+        patchDoc.ApplyTo(orgToPatch, ModelState);
+        if(!TryValidateModel(orgToPatch))
+        {
+            return ValidationProblem(ModelState);
+        }
+      _mapper.Map(orgToPatch, orgModelFromRepo);
+      _repository.UpdateOrganization(orgModelFromRepo);
+      _repository.SaveChanges();
+      return NoContent();
+
+}
       /// <summary>
         /// Update an organization using their Name
         /// </summary>

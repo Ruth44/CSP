@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using CSP.Models;
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace CSP.Controllers
 {
@@ -144,7 +145,7 @@ return Ok(requests);
         /// <param name="org"></param>
         /// <returns></returns>
     //   POST api/songs
-    [HttpPost("/{name}")]
+    [HttpPost("service/{name}")]
     public ActionResult <CreateServices> CreateNewService(string name,CreateServices ser){
 int id=_repository.GetOrganizationByName(name).Id;
          var serModel = _mapper.Map<Service>(ser);
@@ -204,31 +205,31 @@ int id=_repository.GetOrganizationByName(name).Id;
     }
 
      /// <summary>
-//         /// Update part of an organization
-//         /// </summary>
-//         /// <param name="id"></param>
-//         /// <returns></returns>
-//        //PATCH api/CSP/{id}
+        /// Update part of an organization
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+       //PATCH api/CSP/{id}
     
-//     [HttpPatch("{id}")]
-//     public ActionResult PartialOrganizationUpdate(int id, JsonPatchDocument<ReadOrganizations> patchDoc)
-// {
-//       var orgModelFromRepo = _repository.GetOrganizationById(id);
-//         if(orgModelFromRepo == null){
-//             return NotFound();
-//         }
-//         var orgToPatch = _mapper.Map<ReadOrganizations>(orgModelFromRepo);
-//         patchDoc.ApplyTo(orgToPatch, ModelState);
-//         if(!TryValidateModel(orgToPatch))
-//         {
-//             return ValidationProblem(ModelState);
-//         }
-//       _mapper.Map(orgToPatch, orgModelFromRepo);
-//       _repository.UpdateOrganization(orgModelFromRepo);
-//       _repository.SaveChanges();
-//       return NoContent();
+    [HttpPatch("/Request/{name}")]
+    public ActionResult PartialServiceUpdate(string name, JsonPatchDocument<ReadServices> patchDoc)
+{
+      var orgModelFromRepo = _repository2.GetServiceByName(name);
+        if(orgModelFromRepo == null){
+            return NotFound();
+        }
+        var orgToPatch = _mapper.Map<ReadServices>(orgModelFromRepo);
+        patchDoc.ApplyTo(orgToPatch, ModelState);
+        if(!TryValidateModel(orgToPatch))
+        {
+            return ValidationProblem(ModelState);
+        }
+      _mapper.Map(orgToPatch, orgModelFromRepo);
+      _repository2.UpdateService(orgModelFromRepo);
+      _repository2.SaveChanges();
+      return NoContent();
 
-// }
+}
 
     
 

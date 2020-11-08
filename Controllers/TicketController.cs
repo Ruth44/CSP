@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace CSP.Controllers{
     //api/songs
@@ -163,7 +164,7 @@ foreach(var req in requestss)
         /// <param name="userId"></param>
         /// <returns></returns>
     //   POST api/songs
-    [HttpPost("Create/{userId}")]
+    [HttpPost("ticket/{userId}")]
     public ActionResult <CreateTicket> CreateNewTicket(int userId,CreateTicket tic){
 
          var ticModel = _mapper.Map<Ticket>(tic);
@@ -206,31 +207,31 @@ foreach(var req in requestss)
 
 
      /// <summary>
-//         /// Update part of an organization
-//         /// </summary>
-//         /// <param name="id"></param>
-//         /// <returns></returns>
-//        //PATCH api/CSP/{id}
+        /// Update part of a ticket
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
+       //PATCH api/CSP/{id}
     
-//     [HttpPatch("{id}")]
-//     public ActionResult PartialOrganizationUpdate(int id, JsonPatchDocument<ReadOrganizations> patchDoc)
-// {
-//       var orgModelFromRepo = _repository.GetOrganizationById(id);
-//         if(orgModelFromRepo == null){
-//             return NotFound();
-//         }
-//         var orgToPatch = _mapper.Map<ReadOrganizations>(orgModelFromRepo);
-//         patchDoc.ApplyTo(orgToPatch, ModelState);
-//         if(!TryValidateModel(orgToPatch))
-//         {
-//             return ValidationProblem(ModelState);
-//         }
-//       _mapper.Map(orgToPatch, orgModelFromRepo);
-//       _repository.UpdateOrganization(orgModelFromRepo);
-//       _repository.SaveChanges();
-//       return NoContent();
+    [HttpPatch("/TicketNumber/{number}")]
+    public ActionResult PartialOrganizationUpdate(int id, JsonPatchDocument<CreateTicket> patchDoc)
+{
+      var orgModelFromRepo = _ticket.GetTicketByNumber(id);
+        if(orgModelFromRepo == null){
+            return NotFound();
+        }
+        var orgToPatch = _mapper.Map<CreateTicket>(orgModelFromRepo);
+        patchDoc.ApplyTo(orgToPatch, ModelState);
+        if(!TryValidateModel(orgToPatch))
+        {
+            return ValidationProblem(ModelState);
+        }
+      _mapper.Map(orgToPatch, orgModelFromRepo);
+      _ticket.UpdateTicket(orgModelFromRepo);
+      _ticket.SaveChanges();
+      return NoContent();
 
-// }
+}
 
     
 

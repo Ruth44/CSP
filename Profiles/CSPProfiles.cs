@@ -24,6 +24,8 @@ namespace CSP.Profiles
                     CreateMap<Ticket, GetTicket>();
                     CreateMap<GetServices, Service>();
                     CreateMap<Service, GetServices>();
+                          CreateMap<CreateUserAccount, User>();
+                    CreateMap<User, CreateUserAccount>();
         }
     }
 }
