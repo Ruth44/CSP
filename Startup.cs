@@ -42,6 +42,8 @@ namespace CSP
             services.AddScoped<IServiceRepo, SqlServiceRepo>();
             services.AddScoped<IAuthRepo, SqlAuthRepo>();
             services.AddScoped<IUserRepo, SqlUserRepo>();
+            services.AddScoped<ITicketRepo, SqlTicketRepo>();
+            services.AddScoped<IRequestRepo, SqlRequestRepo>();
 
             // services.AddScoped<IAlbumRepo, SqlAlbumRepo>();
             // services.AddScoped<IArtistRepo, SqlArtistRepo>();

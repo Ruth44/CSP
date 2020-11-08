@@ -13,6 +13,8 @@ namespace CSP.Data
         Task<IEnumerable<User>> GetAllAsync(Func<IQueryable<User>, IOrderedQueryable<User>> orderBy = null);
         Task<User> GetAsync(int id);
         Task<User> AddAsync(User user);
+        User GetUserById(int id);
+        User GetUserByName(string name);
         Task<IEnumerable<User>> FindByAsync(AuthenticateUser authUserVM);
     }
 }

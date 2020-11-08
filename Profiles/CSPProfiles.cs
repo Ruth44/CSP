@@ -8,20 +8,22 @@ namespace CSP.Profiles
     {
         public CSPProfile()
         {
-//                     CreateMap<Song, MusicCreate>();
-//                     CreateMap<MusicCreate, Song>();
-CreateMap<Organization, ReadOrganizations>();
- CreateMap<ReadOrganizations, Organization>();
- CreateMap<Service, ReadServices>();
- CreateMap<ReadServices, Service>();
-//                      CreateMap<Song, ReadSongs>();
-//                     CreateMap<ReadSongs, Song>();
-//                      CreateMap<Song, ReadAlbums>();
-//                     CreateMap<ReadAlbums, Song>();
-//                      CreateMap<Song, ReadArtists>();
-//                     CreateMap<ReadArtists, Song>();
-//                     // CreateMap<CommandUpdateDto, Command>();
-//                     // CreateMap<Command, CommandUpdateDto>();
+                    CreateMap<Request, GetRequest>();
+                    CreateMap<GetRequest, Request>();
+            CreateMap<Organization, ReadOrganizations>();
+            CreateMap<ReadOrganizations, Organization>();
+            CreateMap<Service, ReadServices>();
+            CreateMap<ReadServices, Service>();
+            CreateMap<Service, CreateServices>();
+            CreateMap<CreateServices, Service>();
+                     CreateMap<Request, CreateRequest>();
+                    CreateMap<CreateRequest, Request>();
+                     CreateMap<Ticket, CreateTicket>();
+                    CreateMap<CreateTicket, Ticket>();
+                    CreateMap<GetTicket, Ticket>();
+                    CreateMap<Ticket, GetTicket>();
+                    CreateMap<GetServices, Service>();
+                    CreateMap<Service, GetServices>();
         }
     }
 }

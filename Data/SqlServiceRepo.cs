@@ -18,19 +18,17 @@ namespace CSP.Data{
             _service=_context.Set<Service>();
 
         }
-      
+          public Service GetServiceByName(string name)
+        {
+return _context.Services.FirstOrDefault(p=> p.Name==name);
+        }
         public bool SaveChanges()
         {
           return (_context.SaveChanges() >= 0);
         }
 
 
-//         void IArtistRepo.CreateArtist(Artist song)
-//         {
-//  if(song==null){
-//             throw new ArgumentNullException(nameof(song));
-//           }
-//           _context.Artists.Add(song);        }
+     
 
         public void DeleteService(Service ser)
         {
@@ -43,14 +41,11 @@ if(ser==null){
 
         public IEnumerable<Service> FindBy(Expression<Func<Service,bool>> ser)
         {
-  return _service.Where(ser);
+  return _service.Where(ser).ToList();
                         // return test;       
                          }
 
-  //       IEnumerable<Artist> IArtistRepo.GetAllArtists()
-  //       {
-  // return _context.Artists.ToList();       
-  //  }
+      
 
         public Service GetServiceById(int id)
         {
@@ -60,10 +55,22 @@ return _context.Services.FirstOrDefault(p=> p.Id==id);
            return _context.Services.FirstOrDefault(p=> p.Organization.Id==id);
         }
 
+        void IServiceRepo.CreateService(Service ser)
+        {
+ if(ser==null){
+            throw new ArgumentNullException(nameof(ser));
+          }
+          _context.Services.Add(ser);           }
 
-//         void IArtistRepo.UpdateArtist(Artist artist)
-//         {
 
-//         }
+                void IServiceRepo.UpdateService(Service ser)
+                {
+
+                }
+
+        IEnumerable<Service> IServiceRepo.GetAllServices()
+        {
+  return _context.Services.ToList();       
+        }
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CSP.Controllers{
     //api/songs
@@ -17,6 +18,8 @@ namespace CSP.Controllers{
     {
 private readonly IOrganizationRepo _repository;
 private readonly IServiceRepo _repository2;
+private readonly IRequestRepo _request;
+private readonly ITicketRepo _ticket;
 private readonly IUserRepo _userService;
         private readonly IAuthRepo _authService;
 
@@ -25,8 +28,10 @@ private readonly IUserRepo _userService;
 
         private readonly IMapper _mapper;
 
-        public CSPController(IOrganizationRepo repository , IServiceRepo repository2 , IMapper mapper, IAuthRepo authService, IUserRepo userService)// IArtistRepo repository3)
+        public CSPController(IOrganizationRepo repository ,ITicketRepo ticket, IServiceRepo repository2 , IMapper mapper, IAuthRepo authService, IUserRepo userService, IRequestRepo request)// IArtistRepo repository3)
        {
+           _ticket=ticket;
+           _request=request;
            _userService=userService;
            _authService=authService;
         _repository2= repository2;
@@ -62,7 +67,10 @@ private readonly IUserRepo _userService;
             {
                 Username = userVM.Username,
                 Password = userVM.Password,
-                Fullname = userVM.Fullname
+                Fullname = userVM.Fullname,
+                Email=userVM.Email,
+                Gender=userVM.Gender,
+                Phone=userVM.Phone
             };
 
 
@@ -74,28 +82,307 @@ private readonly IUserRepo _userService;
         /// Get all organizations
         /// </summary>
         /// <returns></returns>
+        // [Authorize]
         [HttpGet("/Organization")]
       public ActionResult <IEnumerable<ReadOrganizations>> GetAllOrganizations()
       {
           var orgItems = _repository.GetAllOrganizations();
           return Ok(_mapper.Map<IEnumerable<ReadOrganizations>>(orgItems));
       }
-    //   /// <summary>
-    //     /// Get a song by using its ID
-    //     /// </summary>
-    //     /// <param name="id"></param>
-    //     /// <returns></returns>
-    // //   GET api/songs/$
-    //   [HttpGet("{id}", Name="GetSongById")]
-    //   public ActionResult <ReadSongs> GetSongById(int id)
-    //   {
-    //       var songItem = _repository.GetSongById(id);
-    //       if(songItem != null){
-    //       return Ok(_mapper.Map<ReadSongs>(songItem));
+     
+      /// <summary>
+        /// Get a Request by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+    //   GET api/songs/$
+      [HttpGet("/Requests/{id}")]
+      public ActionResult <GetRequest> GetRequestById(int id)
+      {
+          var reqItem = _request.GetRequestById(id);
+          if(reqItem==null){
+               return NotFound("The Request could not be found.");
+          }
+          var getReq=_mapper.Map<GetRequest>(reqItem);
+          getReq.ServiceName=_repository2.GetServiceById(reqItem.ServiceId).Name;
+          getReq.Username=_userService.GetUserById(reqItem.UserId).Username;
+      
+          return Ok(getReq);
+          
+      }
 
-    //       }
-    //       return NotFound();
-    //   }
+
+ /// <summary>
+        /// Get a Ticket by TicketNumber
+        /// </summary>
+        /// <param name="Ticket_number"></param>
+        /// <returns></returns>
+    //   GET api/songs/$
+      [HttpGet("/Ticket/{Ticket_number}")]
+      public ActionResult <GetTicket> GetTicketByNumber(int Ticket_number)
+      {
+          var reqItem = _ticket.GetTicketByNumber(Ticket_number);
+          if(reqItem==null){
+               return NotFound("The Ticket could not be found.");
+          }
+          var getReq=_mapper.Map<GetTicket>(reqItem);
+          getReq.ServiceName=_repository2.GetServiceById(reqItem.ServiceId).Name;
+          getReq.Username=_userService.GetUserById(reqItem.UserId).Username;
+            getReq.FullName=_userService.GetUserById(reqItem.UserId).Fullname;
+
+      
+          return Ok(getReq);
+          
+      }
+
+
+
+
+
+ /// <summary>
+        /// Get Service with name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+    //   GET api/songs/$
+      [HttpGet("/Service/{name}")]
+      public ActionResult <GetServices> GetServiceByName(string name)
+      {
+          var reqItem = _repository2.GetServiceByName(name);
+          if(reqItem==null){
+               return NotFound("The Service could not be found.");
+          }
+          var getReq=_mapper.Map<GetServices>(reqItem);
+          getReq.OrganizationName=_repository.GetOrganizationById(reqItem.OrganizationId).Name;
+         
+
+      
+          return Ok(getReq);
+          
+      }
+
+
+
+ /// <summary>
+        /// Get Service with Organization Name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+    //   GET api/songs/$
+      [HttpGet("/Service/OrganizationName/{name}")]
+      public ActionResult <CreateServices> GetServiceByOrgName(string name)
+      {
+          var orgId=_repository.GetOrganizationByName(name).Id;
+          var serItem = _repository2.FindBy(t => t.OrganizationId == orgId);
+          if(serItem != null){
+              
+            //   getReq.OrganizationName=name;
+          return Ok(_mapper.Map<IEnumerable<CreateServices>>(serItem));
+
+          }else return NotFound("The Service could not be found.");
+      
+          
+      }
+
+     //////////////////////////////////////////////////////////////////////////
+      /// <summary>
+        /// Get Ticket with Service name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+    //   GET api/songs/$
+      [HttpGet("/Ticket/ServiceName/{name}")]
+      public ActionResult <CreateServices> GetTicketsBySerName(string name)
+      {
+          var serId=_repository2.GetServiceByName(name).Id;
+          var ticItems = _ticket.FindByMany(t => t.ServiceId == serId);
+          if(ticItems != null){
+             var tic= _mapper.Map<IEnumerable<GetTicket>>(ticItems);
+                      var requestss = ticItems.Zip(tic, (i, r) => new { Item = i, Request = r });
+foreach(var req in requestss)
+{
+                     req.Request.ServiceName=_repository2.GetServiceById(req.Item.ServiceId).Name ;
+                    req.Request.Username=_userService.GetUserById(req.Item.UserId).Username ;
+                    req.Request.FullName=_userService.GetUserById(req.Item.UserId).Fullname;
+
+}
+          return Ok(tic);
+
+          }else return NotFound("The Ticket could not be found.");
+      } 
+  //////////////////////////////////////////////////////////////////////////
+      /// <summary>
+        /// Get Ticket with userName
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+    //   GET api/songs/$
+      [HttpGet("/Ticket/UserName/{name}")]
+      public ActionResult <CreateServices> GetTicketsByUserName(string name)
+      {
+                   var uId=_userService.GetUserByName(name).Id;
+          var ticItems = _ticket.FindByMany(t => t.UserId == uId);
+          if(ticItems != null){
+             var tic= _mapper.Map<IEnumerable<GetTicket>>(ticItems);
+                      var requestss = ticItems.Zip(tic, (i, r) => new { Item = i, Request = r });
+foreach(var req in requestss)
+{
+                     req.Request.ServiceName=_repository2.GetServiceById(req.Item.ServiceId).Name ;
+                    req.Request.Username=_userService.GetUserById(req.Item.UserId).Username ;
+                    req.Request.FullName=_userService.GetUserById(req.Item.UserId).Fullname;
+
+}
+          return Ok(tic);
+
+          }else return NotFound("The Ticket could not be found.");
+      
+          
+      } 
+  //////////////////////////////////////////////////////////////////////////
+      /// <summary>
+        /// Get Request with Service Name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+    //   GET api/songs/$
+      [HttpGet("/Request/ServiceName/{name}")]
+      public ActionResult <GetRequest> GetRequestbySername(string name)
+      {
+           var serId=_repository2.GetServiceByName(name).Id;
+          var ticItems = _request.FindByMany(t => t.ServiceId == serId);
+          if(ticItems != null){
+             var tic= _mapper.Map<IEnumerable<GetRequest>>(ticItems);
+                      var requestss = ticItems.Zip(tic, (i, r) => new { Item = i, Request = r });
+foreach(var req in requestss)
+{
+                      req.Request.ServiceName=_repository2.GetServiceById(req.Item.ServiceId).Name ;
+                    req.Request.Username=_userService.GetUserById(req.Item.UserId).Username ;
+
+}
+          return Ok(tic);
+
+          }else return NotFound("The Ticket could not be found.");
+          
+      } 
+  //////////////////////////////////////////////////////////////////////////
+      /// <summary>
+        /// Get request with userName
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+    //   GET api/songs/$
+      [HttpGet("/Request/UserName/{name}")]
+       public ActionResult <GetRequest> GetRequestbyUsername(string name)
+      {
+           var serId=_userService.GetUserByName(name).Id;
+          var ticItems = _request.FindByMany(t => t.UserId == serId);
+          if(ticItems != null){
+             var tic= _mapper.Map<IEnumerable<GetRequest>>(ticItems);
+                      var requestss = ticItems.Zip(tic, (i, r) => new { Item = i, Request = r });
+foreach(var req in requestss)
+{
+                      req.Request.ServiceName=_repository2.GetServiceById(req.Item.ServiceId).Name ;
+                    req.Request.Username=_userService.GetUserById(req.Item.UserId).Username ;
+
+}
+          return Ok(tic);
+
+          }else return NotFound("The Ticket could not be found.");
+          
+      
+      } 
+ 
+ /// <summary>
+        /// Get Service with ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+    //   GET api/songs/$
+      [HttpGet("/Service/Byname/{id}")]
+      public ActionResult <GetServices> GetServiceById(int id)
+      {
+          var reqItem = _repository2.GetServiceById(id);
+          if(reqItem==null){
+               return NotFound("The Service could not be found.");
+          }
+          var getReq=_mapper.Map<GetServices>(reqItem);
+          getReq.OrganizationName=_repository.GetOrganizationById(reqItem.OrganizationId).Name;
+         
+
+      
+          return Ok(getReq);
+          
+      }
+
+
+
+
+
+          /// <summary>
+        /// Get all requests
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("/Service")]
+      public ActionResult <IEnumerable<GetServices>> GetAllServices()
+      {
+          var reqItems = _repository2.GetAllServices();
+           var requests= _mapper.Map<IEnumerable<GetServices>>(reqItems);
+
+
+        var requestss = reqItems.Zip(requests, (i, r) => new { Item = i, Request = r });
+foreach(var req in requestss)
+{
+                       req.Request.OrganizationName=_repository.GetOrganizationById(req.Item.OrganizationId).Name ;
+                    
+}
+return Ok(requests);
+      }
+
+           /// <summary>
+        /// Get all requests
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("/Request")]
+      public ActionResult <IEnumerable<GetRequest>> GetAllRequests()
+      {
+          var reqItems = _request.GetAllRequests();
+           var requests= _mapper.Map<IEnumerable<GetRequest>>(reqItems);
+
+
+        var requestss = reqItems.Zip(requests, (i, r) => new { Item = i, Request = r });
+foreach(var req in requestss)
+{
+                       req.Request.ServiceName=_repository2.GetServiceById(req.Item.ServiceId).Name ;
+                    req.Request.Username=_userService.GetUserById(req.Item.UserId).Username ;
+
+}
+          
+               
+          return Ok(requests);
+      }
+        /// <summary>
+        /// Get all tickets
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("/Tickets")]
+      public ActionResult <IEnumerable<GetTicket>> GetAllTickets()
+      {
+          var reqItems = _ticket.GetAllTickets();
+           var requests= _mapper.Map<IEnumerable<GetTicket>>(reqItems);
+
+
+        var requestss = reqItems.Zip(requests, (i, r) => new { Item = i, Request = r });
+foreach(var req in requestss)
+{
+                       req.Request.ServiceName=_repository2.GetServiceById(req.Item.ServiceId).Name ;
+                    req.Request.Username=_userService.GetUserById(req.Item.UserId).Username ;
+                    req.Request.FullName=_userService.GetUserById(req.Item.UserId).Fullname;
+
+}
+          
+               
+          return Ok(requests);
+      }
     //    /// Get an album by using its name(USING PREDICATE)
     //     /// </summary>
     //     /// <param name="name"></param>
@@ -171,11 +458,64 @@ private readonly IUserRepo _userService;
         // _repository.SaveChanges();
 
         // var songReadDto = _mapper.Map<MusicCreate>(songModel);
-        return Ok("Successfully inserted.");
+        return Ok("Successfully inserted "+ org.Name);
+    }
+/// <summary>
+        /// Create a service by taking in the organization name
+        /// </summary>
+        /// <param name="org"></param>
+        /// <returns></returns>
+    //   POST api/songs
+    [HttpPost("/Service/{name}")]
+    public ActionResult <CreateServices> CreateNewService(string name,CreateServices ser){
+int id=_repository.GetOrganizationByName(name).Id;
+         var serModel = _mapper.Map<Service>(ser);
+         serModel.OrganizationId=id;
+        _repository2.CreateService(serModel);
+        _repository2.SaveChanges();
+
+        return Ok("Successfully inserted "+ ser.Name);
     }
 
 
+/// <summary>
+        /// Create a Request by taking in the userId
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+    //   POST api/songs
+    [HttpPost("/Request/{userId}")]
+    public ActionResult <CreateRequest> CreateNewRequest(int userId,CreateRequest req){
+int id=_repository2.GetServiceByName(req.ServiceName).Id;
+         var reqModel = _mapper.Map<Request>(req);
+         reqModel.UserId=userId;
+         reqModel.ServiceId=id;
+         reqModel.Status="Ongoing";
+         reqModel.CreatedAt=DateTime.Now;
+        _request.CreateRequest(reqModel);
+        _request.SaveChanges();
 
+        return Ok("Successfully created on!");
+    }
+
+ /// Create a Ticket by taking in the userId
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+    //   POST api/songs
+    [HttpPost("/Ticket/{userId}")]
+    public ActionResult <CreateTicket> CreateNewTicket(int userId,CreateTicket tic){
+
+         var ticModel = _mapper.Map<Ticket>(tic);
+         ticModel.UserId=userId;
+         ticModel.ServiceId=_repository2.GetServiceByName(tic.ServiceName).Id;
+         ticModel.CreatedAt=DateTime.Now;
+         ticModel.TicketNumber=new Random().Next(100000,999999999);
+        _ticket.CreateTicket(ticModel);
+        _request.SaveChanges();
+
+        return Ok("Successfully created on!");
+    }
 
 
 
@@ -246,6 +586,45 @@ private readonly IUserRepo _userService;
         _repository.SaveChanges();
         return NoContent();
     }
+/// <summary>
+        /// Update a request using its ID
+        /// </summary>
+        /// <param name="orgUpdate"></param>
+        /// <returns></returns>
+    //PUT api/CSP/{id}
+    [HttpPut("/Request/{id}")]
+    public ActionResult UpdateRequestById(int id, CreateRequest reqUpdate)
+    {
+        var reqModelFromRepo = _request.GetRequestById(id);
+        if(reqModelFromRepo == null){
+            return NotFound();
+        }
+        _mapper.Map(reqUpdate, reqModelFromRepo);
+        reqModelFromRepo.ServiceId= _repository2.GetServiceByName(reqUpdate.ServiceName).Id;
+        _request.UpdateRequest(reqModelFromRepo);
+        _request.SaveChanges();
+        return NoContent();
+    }
+
+/// <summary>
+        /// Update a ticket using its Ticket Number
+        /// </summary>
+        /// <param name="ticUpdate"></param>
+        /// <returns></returns>
+    //PUT api/CSP/{id}
+    [HttpPut("/Ticket/{ticket_number}")]
+    public ActionResult UpdateTicketById(int ticket_number, CreateTicket ticUpdate)
+    {
+        var ticModelFromRepo = _ticket.GetTicketByNumber(ticket_number);
+        if(ticModelFromRepo == null){
+            return NotFound("No such Ticket");
+        }
+        _mapper.Map(ticUpdate, ticModelFromRepo);
+        ticModelFromRepo.ServiceId= _repository2.GetServiceByName(ticUpdate.ServiceName).Id;
+        _ticket.UpdateTicket(ticModelFromRepo);
+        _ticket.SaveChanges();
+        return Ok("Updated Successfuly");
+    }
 
   /// <summary>
         /// Update an organization using their Name
@@ -263,6 +642,43 @@ private readonly IUserRepo _userService;
         _mapper.Map(orgUpdate, orgModelFromRepo);
         _repository.UpdateOrganization(orgModelFromRepo);
         _repository.SaveChanges();
+        return NoContent();
+    }
+ /// <summary>
+        /// Update a service using its ID
+        /// </summary>
+        /// <param name="serUpdate"></param>
+        /// <returns></returns>
+    //PUT api/CSP/{id}
+    [HttpPut("/Service/Update/{id}")]
+    public ActionResult UpdateServiceById(int id, CreateServices serUpdate)
+    {
+        var serModelFromRepo = _repository2.GetServiceById(id);
+        if(serModelFromRepo == null){
+            return NotFound();
+        }
+        _mapper.Map(serUpdate, serModelFromRepo);
+        _repository2.UpdateService(serModelFromRepo);
+        _repository2.SaveChanges();
+        return NoContent();
+    }
+
+  /// <summary>
+        /// Update a service using its Name
+        /// </summary>
+        /// <param name="serUpdate"></param>
+        /// <returns></returns>
+    //PUT api/CSP/hh/{}
+    [HttpPut("/Service/{service_name}")]
+    public ActionResult UpdateServiceByName(string service_name, CreateServices serUpdate)
+    {
+        var serModelFromRepo = _repository2.GetServiceByName(service_name);
+        if(serModelFromRepo == null){
+            return NotFound();
+        }
+        _mapper.Map(serUpdate, serModelFromRepo);
+        _repository2.UpdateService(serModelFromRepo);
+        _repository2.SaveChanges();
         return NoContent();
     }
 
@@ -343,5 +759,68 @@ public ActionResult DeleteOrganizationbyName(string name)
     _repository.SaveChanges();
     return NoContent();
 }
+
+
+/// <summary>
+        /// Delete a service using its ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+// DELETE api/Organization/{id}
+[HttpDelete("/Service/{id}")]
+public ActionResult DeleteServicebyId(int id)
+{
+    var toBeDeleted= _repository2.GetServiceById(id);
+  if(toBeDeleted==null){
+      return NotFound("Service not found!");
+  }
+        _repository2.DeleteService(toBeDeleted);
+    _repository2.SaveChanges();
+      
+    return Ok("Deleted Successfully");
+}
+
+/// <summary>
+        /// Delete a request using its ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+// DELETE api/Organization/{id}
+[HttpDelete("/Request/{id}")]
+public ActionResult DeleteRequestbyId(int id)
+{
+    var toBeDeleted= _request.GetRequestById(id);
+  if(toBeDeleted==null){
+      return NotFound("Request not found!");
+  }
+        _request.DeleteRequest(toBeDeleted);
+    _request.SaveChanges();
+      
+    return Ok("Deleted Successfully");
+}
+
+
+/// <summary>
+        /// Delete a Ticket using its Ticket Number
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+// DELETE api/Organization/{id}
+[HttpDelete("/Ticket/{ticket_number}")]
+public ActionResult DeleteTicketbyNumber(int ticket_number)
+{
+    var toBeDeleted= _ticket.GetTicketByNumber(ticket_number);
+  if(toBeDeleted==null){
+      return NotFound("Service not found!");
+  }
+        _ticket.DeleteTicket(toBeDeleted);
+    _ticket.SaveChanges();
+      
+    return Ok("Deleted Successfully");
+}
+
+
+
+
     }
 }

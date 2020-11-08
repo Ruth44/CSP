@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CSP.Models
 {
     public class User
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
         [Required]
+        
         public string Username{ get; set; }
                 [Required]
 
@@ -18,13 +17,12 @@ namespace CSP.Models
 
         public string Fullname { get; set; }
                 [Required]
-
+[MaxLength(25) , MinLength(7)]
          public string Email { get; set; }
                  [Required]
-
          public string Phone { get; set; }
                  [Required]
-
+[MaxLength(6) , MinLength(1)]
          public string Gender { get; set; }
  
     }
