@@ -84,3 +84,4 @@ C:\Users\Ruth\Documents\Gebeya\DotNet\CSP\obj\Debug\netcoreapp3.1\CSP.RazorTarge
 C:\Users\Ruth\Documents\Gebeya\DotNet\CSP\obj\Debug\netcoreapp3.1\CSP.csproj.CopyComplete
 C:\Users\Ruth\Documents\Gebeya\DotNet\CSP\obj\Debug\netcoreapp3.1\CSP.dll
 C:\Users\Ruth\Documents\Gebeya\DotNet\CSP\obj\Debug\netcoreapp3.1\CSP.pdb
+C:\Users\Ruth\Documents\Gebeya\DotNet\CSP\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll

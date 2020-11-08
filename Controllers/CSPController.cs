@@ -5,6 +5,9 @@ using CSP.ViewModels;
 using CSP.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using System;
+using System.Linq;
 
 namespace CSP.Controllers{
     //api/songs
@@ -14,19 +17,58 @@ namespace CSP.Controllers{
     {
 private readonly IOrganizationRepo _repository;
 private readonly IServiceRepo _repository2;
+private readonly IUserRepo _userService;
+        private readonly IAuthRepo _authService;
 
 // private readonly IArtistRepo _repository3;
 
 
         private readonly IMapper _mapper;
 
-        public CSPController(IOrganizationRepo repository , IServiceRepo repository2 , IMapper mapper)// IArtistRepo repository3)
+        public CSPController(IOrganizationRepo repository , IServiceRepo repository2 , IMapper mapper, IAuthRepo authService, IUserRepo userService)// IArtistRepo repository3)
        {
+           _userService=userService;
+           _authService=authService;
         _repository2= repository2;
            _repository = repository;
         //    _repository3=repository3;
            _mapper = mapper;
        }
+
+[HttpPost("/Authenticate")]
+        public async Task<AuthenticatedUserResult> Authenticate([FromBody] AuthenticateUser authUserVM)
+        {
+            try
+            {
+                var authUser = await this._authService.AuthenticateAsync(authUserVM);
+
+                if (authUser == null)
+                {
+                    throw new Exception("User is unauthorized or credentials don't match");
+                }
+
+                return this._authService.GetToken(authUser.FirstOrDefault());
+            }
+            catch (Exception e) { throw e; }
+        }
+/// Create Account
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        [HttpPost("/User")]
+        public async Task<User> CreateAccount([FromBody] CreateUserAccount userVM)
+        {
+            User user = new User()
+            {
+                Username = userVM.Username,
+                Password = userVM.Password,
+                Fullname = userVM.Fullname
+            };
+
+
+            return await this._userService.AddAsync(user);
+        }
+
     //  GET api/songs
      /// <summary>
         /// Get all organizations
@@ -192,7 +234,7 @@ private readonly IServiceRepo _repository2;
         /// <param name="orgUpdate"></param>
         /// <returns></returns>
     //PUT api/CSP/{id}
-    [HttpPut(/Organization/Update/{id}")]
+    [HttpPut("/Organization/Update/{id}")]
     public ActionResult UpdateOrganizationById(int id, ReadOrganizations orgUpdate)
     {
         var orgModelFromRepo = _repository.GetOrganizationById(id);

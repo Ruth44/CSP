@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using CSP.Data;
 using Newtonsoft.Json.Serialization;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CSP
 {
@@ -37,9 +40,29 @@ namespace CSP
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IOrganizationRepo, SqlOrganizationRepo>();
             services.AddScoped<IServiceRepo, SqlServiceRepo>();
+            services.AddScoped<IAuthRepo, SqlAuthRepo>();
+            services.AddScoped<IUserRepo, SqlUserRepo>();
 
             // services.AddScoped<IAlbumRepo, SqlAlbumRepo>();
             // services.AddScoped<IArtistRepo, SqlArtistRepo>();
+             services.AddAuthentication(options => 
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options => 
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+
+                    ValidIssuer = Configuration["Jwt:Site"],
+                    ValidAudience = Configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                };
+            });
 
              services.AddSwaggerGen( s => 
             {
@@ -82,6 +105,7 @@ namespace CSP
 
             app.UseRouting();
 
+             app.UseAuthentication();
             app.UseAuthorization();
             app.UseSwagger();
             app.UseSwaggerUI( s => 

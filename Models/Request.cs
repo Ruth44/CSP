@@ -15,7 +15,9 @@ namespace CSP.Models
    
    public string Status { get; set; }
    [Required]
-   public DateTime Time { get; set; }
+   public DateTime CreatedAt { get; set; }
+      [Required]
+   public DateTime RequestedFor { get; set; }
    [Required]
   
    public int notification { get; set; }

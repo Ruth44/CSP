@@ -11,9 +11,16 @@ namespace CSP.Models
    [Required]
    
    public string UserName { get; set; }
+     [Required]
+   
+   public int TicketNumber { get; set; }
    [Required]
    
    public string Status { get; set; }
+   [Required]
+   public DateTime CreatedAt { get; set; }
+     [Required]
+   public DateTime CreatedFor { get; set; }
     public string ServiceDescription { get; set; }
       [Required]
         public Service Service { get; set; }

@@ -1,5 +1,5 @@
 {
-  "FilePath": "c:\\Users\\Ruth\\Documents\\Gebeya\\Dotnet\\Music\\Music.csproj",
+  "FilePath": "c:\\Users\\Ruth\\Documents\\Gebeya\\DotNet\\CSP\\CSP.csproj",
   "Configuration": {
     "ConfigurationName": "MVC-3.0",
     "LanguageVersion": "3.0",
@@ -14389,7 +14389,7 @@
     ],
     "CSharpLanguageVersion": 900
   },
-  "RootNamespace": "Music",
+  "RootNamespace": "CSP",
   "Documents": [],
   "SerializationFormat": "0.2"
 }
