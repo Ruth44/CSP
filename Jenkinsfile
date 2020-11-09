@@ -39,7 +39,7 @@ spec:
         stage('Deploy API') {    
           steps {
             container('kubectl'){
-              sh("sed -i.bak 's#gcr.io/gcr-project/sample:1.0.0#${IMAGE_TAG}#' ./deployment/*.yaml")
+              sh("sed -i.bak 's#gcr.io/google-samples/hello-app:1.0#${IMAGE_TAG}#' ./deployment/*.yaml")
               sh("kubectl --namespace=${NAMESPACE} apply -f ./deployment/")
             }
           }
