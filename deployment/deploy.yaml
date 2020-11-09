@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: csp-api
-        image: gcr.io/google-samples/hello-app:1.0
+        image: gcr.io/gcr-project/sample:1.0.0
         env:
           - name: ASPNETCORE_ENVIRONMENT
             value: Development

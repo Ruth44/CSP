@@ -12,15 +12,15 @@ pipeline {
 apiVersion: v1
 kind: Pod
 spec:
-  serviceAccountName: csp-jenkins
+  serviceAccountName: jenkins-cv-comp
   containers:
   - name: gcloud
-    image: gcr.io/cloud-builders/gcloud:1.0
+    image: gcr.io/cloud-builders/gcloud
     command:
     - cat
     tty: true
   - name: kubectl
-    image: gcr.io/cloud-builders/kubectl:1.0
+    image: gcr.io/cloud-builders/kubectl
     command:
     - cat
     tty: true
@@ -39,7 +39,7 @@ spec:
         stage('Deploy API') {    
           steps {
             container('kubectl'){
-              sh("sed -i.bak 's#gcr.io/google-samples/hello-app:1.0#${IMAGE_TAG}#' ./deployment/*.yaml")
+              sh("sed -i.bak 's#gcr.io/gcr-project/sample:1.0.0#${IMAGE_TAG}#' ./deployment/*.yaml")
               sh("kubectl --namespace=${NAMESPACE} apply -f ./deployment/")
             }
           }
