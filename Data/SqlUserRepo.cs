@@ -21,7 +21,12 @@ namespace CSP.Data
             _context = context;
             _userDbSet = _context.Set<User>();
         }
-
+        public User GetUserById(int id){ 
+            return _context.Users.FirstOrDefault(p=> p.Id==id);
+        }
+         public User GetUserByName(string name){ 
+            return _context.Users.FirstOrDefault(p=> p.Username==name);
+        }
         public async Task<User> AddAsync(User user)
         {
             try
@@ -76,6 +81,15 @@ namespace CSP.Data
                 return user;
             }
             catch (Exception e) { throw e; }
+        }
+
+        void IUserRepo.UpdateUser(User org)
+        {
+
+        }
+         public bool SaveChanges()
+        {
+          return (_context.SaveChanges() >= 0);
         }
     }
 }

@@ -26,19 +26,18 @@ namespace CSP.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    ID = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Username = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
-                    Fullname = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    Gender = table.Column<string>(nullable: true),
-                    Age = table.Column<int>(nullable: false),
-                    DateOfBirth = table.Column<DateTime>(nullable: false)
+                    Username = table.Column<string>(nullable: false),
+                    Password = table.Column<string>(nullable: false),
+                    Fullname = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(nullable: false),
+                    Phone = table.Column<string>(nullable: false),
+                    Gender = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.ID);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -68,11 +67,11 @@ namespace CSP.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    UserName = table.Column<string>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
                     Status = table.Column<string>(nullable: false),
-                    Time = table.Column<DateTime>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    RequestedFor = table.Column<DateTime>(nullable: false),
                     notification = table.Column<int>(nullable: false),
-                    ServiceDescription = table.Column<string>(nullable: true),
                     ServiceId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -84,6 +83,12 @@ namespace CSP.Migrations
                         principalTable: "Services",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Requests_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -92,18 +97,33 @@ namespace CSP.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    UserName = table.Column<string>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
+                    TicketNumber = table.Column<int>(nullable: false),
                     Status = table.Column<string>(nullable: false),
-                    ServiceDescription = table.Column<string>(nullable: true),
-                    ServiceId = table.Column<int>(nullable: false)
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    CreatedFor = table.Column<DateTime>(nullable: false),
+                    ServiceId = table.Column<int>(nullable: false),
+                    RequestId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tickets", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Tickets_Requests_RequestId",
+                        column: x => x.RequestId,
+                        principalTable: "Requests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Tickets_Services_ServiceId",
                         column: x => x.ServiceId,
                         principalTable: "Services",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Tickets_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -114,29 +134,44 @@ namespace CSP.Migrations
                 column: "ServiceId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Requests_UserId",
+                table: "Requests",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Services_OrganizationId",
                 table: "Services",
                 column: "OrganizationId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Tickets_RequestId",
+                table: "Tickets",
+                column: "RequestId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tickets_ServiceId",
                 table: "Tickets",
                 column: "ServiceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tickets_UserId",
+                table: "Tickets",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Requests");
-
-            migrationBuilder.DropTable(
                 name: "Tickets");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Requests");
 
             migrationBuilder.DropTable(
                 name: "Services");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Organizations");

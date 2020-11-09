@@ -10,16 +10,16 @@ namespace CSP.Data
     public interface IServiceRepo
     {
         bool SaveChanges();
-    //     void CreateService(Service ser);
+        void CreateService(Service ser);
         IEnumerable<Service> FindBy(Expression<Func<Service,bool>> ser);
 
-    //     IEnumerable<Service> GetAllServices();
+        IEnumerable<Service> GetAllServices();
         Service GetServiceByOrganization(int id);
 
         Service GetServiceById(int id);
-        // Service GetServiceByName(string name);
+        Service GetServiceByName(string name);
 
-        // void UpdateService(Service ser);
+        void UpdateService(Service ser);
         void DeleteService(Service ser);
     }
 }
