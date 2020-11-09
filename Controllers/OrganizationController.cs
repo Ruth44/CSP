@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using CSP.Models;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CSP.Controllers
 {
@@ -49,6 +50,7 @@ private readonly IUserRepo _userService;
         /// <returns></returns>
     //   POST api/songs
     [HttpPost("/Organization")]
+    [Authorize]
     public ActionResult <Organization> CreateOrganization(Organization org){
         
         _repository.CreateOrg(org);

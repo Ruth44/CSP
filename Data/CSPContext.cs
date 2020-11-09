@@ -8,7 +8,7 @@ namespace CSP.Data
         public CSPContext(DbContextOptions<CSPContext> opt): base(opt){
 
         }
-        public DbSet<Organization> Organizations{get;set;}
+        public DbSet<Organization> Organizations{get; set; }
         public DbSet<Service> Services{get;set;}
         
          public DbSet<Ticket> Tickets{get;set;}
