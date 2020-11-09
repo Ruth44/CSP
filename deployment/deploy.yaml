@@ -22,19 +22,21 @@ spec:
         env:
           - name: ASPNETCORE_ENVIRONMENT
             value: Development
+          - name: API_PATH
+            value: /api
         resources:
           limits:
             memory: "500Mi"
             cpu: "100m"
         imagePullPolicy: Always
-        readinessProbe:
-          httpGet:
-            path: /csp/organizations
-            port: 80
-          initialDelaySeconds: 20
-          timeoutSeconds: 20
-          periodSeconds: 20
-          successThreshold: 1
+       # readinessProbe:
+        #  httpGet:
+         #   path: /csp/organizations
+          #  port: 80
+         # initialDelaySeconds: 20
+         #timeoutSeconds: 20
+         # periodSeconds: 20
+         #successThreshold: 1
         ports:
         - name: csp-ui-port
           containerPort: 80
