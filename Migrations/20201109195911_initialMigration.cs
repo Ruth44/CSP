@@ -14,7 +14,7 @@ namespace CSP.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(maxLength: 30, nullable: false),
                     Description = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -28,12 +28,12 @@ namespace CSP.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Username = table.Column<string>(nullable: false),
+                    Username = table.Column<string>(maxLength: 30, nullable: false),
                     Password = table.Column<string>(nullable: false),
                     Fullname = table.Column<string>(nullable: false),
-                    Email = table.Column<string>(nullable: false),
-                    Phone = table.Column<string>(nullable: false),
-                    Gender = table.Column<string>(nullable: false)
+                    Email = table.Column<string>(maxLength: 40, nullable: false),
+                    Phone = table.Column<string>(maxLength: 15, nullable: false),
+                    Gender = table.Column<string>(maxLength: 6, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -46,7 +46,7 @@ namespace CSP.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(maxLength: 30, nullable: false),
                     Description = table.Column<string>(nullable: true),
                     OrganizationId = table.Column<int>(nullable: false)
                 },
@@ -68,7 +68,7 @@ namespace CSP.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<int>(nullable: false),
-                    Status = table.Column<string>(nullable: false),
+                    Status = table.Column<string>(maxLength: 20, nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     RequestedFor = table.Column<DateTime>(nullable: false),
                     notification = table.Column<int>(nullable: false),
@@ -99,7 +99,7 @@ namespace CSP.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<int>(nullable: false),
                     TicketNumber = table.Column<int>(nullable: false),
-                    Status = table.Column<string>(nullable: false),
+                    Status = table.Column<string>(maxLength: 20, nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     CreatedFor = table.Column<DateTime>(nullable: false),
                     ServiceId = table.Column<int>(nullable: false),

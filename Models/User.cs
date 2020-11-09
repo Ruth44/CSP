@@ -8,7 +8,8 @@ namespace CSP.Models
     {
         public int Id { get; set; }
         [Required]
-        
+           [StringLength(30)]
+
         public string Username{ get; set; }
                 [Required]
 
@@ -17,9 +18,11 @@ namespace CSP.Models
 
         public string Fullname { get; set; }
                 [Required]
-[MaxLength(25) , MinLength(7)]
+   [StringLength(40)]
          public string Email { get; set; }
                  [Required]
+                    [StringLength(15)]
+
          public string Phone { get; set; }
                  [Required]
 [MaxLength(6) , MinLength(1)]

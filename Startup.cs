@@ -65,7 +65,7 @@ namespace CSP
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                 };
             });
-
+            services.AddAuthentication();
              services.AddSwaggerGen( s => 
             {
                 s.SwaggerDoc("v1", new OpenApiInfo { Title = "CSP", Version = "v1"});

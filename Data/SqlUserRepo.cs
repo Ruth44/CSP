@@ -27,6 +27,12 @@ namespace CSP.Data
          public User GetUserByName(string name){ 
             return _context.Users.FirstOrDefault(p=> p.Username==name);
         }
+        public User GetUserByEmail(string name){ 
+            return _context.Users.FirstOrDefault(p=> p.Email==name);
+        }
+        public User GetUserByPhone(string name){ 
+            return _context.Users.FirstOrDefault(p=> p.Phone==name);
+        }
         public async Task<User> AddAsync(User user)
         {
             try

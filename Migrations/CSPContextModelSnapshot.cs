@@ -29,7 +29,8 @@ namespace CSP.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(30)")
+                        .HasMaxLength(30);
 
                     b.HasKey("Id");
 
@@ -53,7 +54,8 @@ namespace CSP.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -81,7 +83,8 @@ namespace CSP.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(30)")
+                        .HasMaxLength(30);
 
                     b.Property<int>("OrganizationId")
                         .HasColumnType("int");
@@ -113,7 +116,8 @@ namespace CSP.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<int>("TicketNumber")
                         .HasColumnType("int");
@@ -140,7 +144,8 @@ namespace CSP.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(40)")
+                        .HasMaxLength(40);
 
                     b.Property<string>("Fullname")
                         .IsRequired()
@@ -148,7 +153,8 @@ namespace CSP.Migrations
 
                     b.Property<string>("Gender")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(6)")
+                        .HasMaxLength(6);
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -156,11 +162,13 @@ namespace CSP.Migrations
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(15)")
+                        .HasMaxLength(15);
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(30)")
+                        .HasMaxLength(30);
 
                     b.HasKey("Id");
 

@@ -38,6 +38,7 @@ private readonly IUserRepo _userService;
         /// <returns></returns>
         // [Authorize]
         [HttpGet]
+        [Route("csp/organizations")]
       public ActionResult <IEnumerable<ReadOrganizations>> GetAllOrganizations()
       {
           var orgItems = _repository.GetAllOrganizations();
@@ -49,14 +50,23 @@ private readonly IUserRepo _userService;
         /// <param name="org"></param>
         /// <returns></returns>
     //   POST api/songs
-    [HttpPost("/Organization")]
-    [Authorize]
-    public ActionResult <Organization> CreateOrganization(Organization org){
-        
-        _repository.CreateOrg(org);
+    [HttpPost]
+    [Route("csp/organizations")]
+    // [Authorize]
+    public ActionResult <ReadOrganizations> CreateOrganization(ReadOrganizations org){
+        var orgData=_repository.GetOrganizationByName(org.Name);
+if(orgData==null){
+            // _mapper.Map(org, orgData);
+         var reqModel = _mapper.Map<Organization>(org);
+
+  _repository.CreateOrg(reqModel);
         _repository.SaveChanges();
 
         return Ok("Successfully inserted "+ org.Name);
+}else{
+    return NotFound("Organization already exists");
+}
+      
     }
         /// <summary>
         /// Update an organization using their ID
@@ -64,7 +74,8 @@ private readonly IUserRepo _userService;
         /// <param name="orgUpdate"></param>
         /// <returns></returns>
     //PUT api/CSP/{id}
-    [HttpPut("/UpdateById/{id}")]
+    [HttpPut]
+    [Route("csp/organizations/UpdateById/{id}")]
     public ActionResult UpdateOrganizationById(int id, ReadOrganizations orgUpdate)
     {
         var orgModelFromRepo = _repository.GetOrganizationById(id);
@@ -82,7 +93,9 @@ private readonly IUserRepo _userService;
         /// <returns></returns>
        //PATCH api/CSP/{id}
     
-    [HttpPatch("{id}")]
+    [HttpPatch]
+        [Route("csp/organizations/PartialUpdateById/{id}")]
+
     public ActionResult PartialOrganizationUpdate(int id, JsonPatchDocument<ReadOrganizations> patchDoc)
 {
       var orgModelFromRepo = _repository.GetOrganizationById(id);
@@ -107,7 +120,7 @@ private readonly IUserRepo _userService;
         /// <param name="orgUpdate"></param>
         /// <returns></returns>
     //PUT api/CSP/hh/{}
-    [HttpPut("/UpdatebyName/{organization_name}")]
+    [HttpPut("csp/organization/UpdatebyName/{organization_name}")]
     public ActionResult UpdateOrganizationByName(string organization_name, ReadOrganizations orgUpdate)
     {
         var orgModelFromRepo = _repository.GetOrganizationByName(organization_name);
@@ -125,7 +138,7 @@ private readonly IUserRepo _userService;
         /// <param name="id"></param>
         /// <returns></returns>
 // DELETE api/Organization/{id}
-[HttpDelete("/DeleteById/{id}")]
+[HttpDelete("csp/organization/DeleteById/{id}")]
 public ActionResult DeleteOrganizationbyId(int id)
 {
     var toBeDeleted= _repository2.GetServiceByOrganization(id);
@@ -148,7 +161,7 @@ public ActionResult DeleteOrganizationbyId(int id)
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-[HttpDelete("/DeletebyName/{name}")]
+[HttpDelete("csp/organization/DeletebyName/{name}")]
 public ActionResult DeleteOrganizationbyName(string name)
 {
     var orgId= _repository.GetOrganizationByName(name).Id;

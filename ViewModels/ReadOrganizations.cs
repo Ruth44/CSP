@@ -12,7 +12,6 @@ namespace CSP.ViewModels
    public string Name { get; set; }
     [Required]
    public string Description { get; set; }
-           public ICollection<Service> Services { get; set; }     
 
      }
 
