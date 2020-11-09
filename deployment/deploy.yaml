@@ -29,7 +29,7 @@ spec:
         imagePullPolicy: Always
         readinessProbe:
           httpGet:
-            path: /api/Organiation/
+            path: api/organiation
             port: 80
           initialDelaySeconds: 20
           timeoutSeconds: 20
@@ -37,4 +37,4 @@ spec:
           successThreshold: 1
         ports:
         - name: csp-ui-port
-          containerPort: 3000
+          containerPort: 80
