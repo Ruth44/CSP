@@ -29,7 +29,7 @@ spec:
         imagePullPolicy: Always
         readinessProbe:
           httpGet:
-            path: api/organiation
+            path: /csp/organizations
             port: 80
           initialDelaySeconds: 20
           timeoutSeconds: 20
