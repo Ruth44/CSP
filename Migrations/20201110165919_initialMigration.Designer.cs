@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CSP.Migrations
 {
     [DbContext(typeof(CSPContext))]
-    [Migration("20201109195911_initialMigration")]
+    [Migration("20201110165919_initialMigration")]
     partial class initialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

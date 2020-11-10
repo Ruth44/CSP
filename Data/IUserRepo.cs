@@ -16,9 +16,12 @@ namespace CSP.Data
         User GetUserById(int id);
         User GetUserByName(string name);
         User GetUserByEmail(string name);
+                IEnumerable<User> GetAllUsers();
+
         User GetUserByPhone(string name);
                 void UpdateUser(User org);
         bool SaveChanges();
+        void DeleteUser(User usr);
 
         Task<IEnumerable<User>> FindByAsync(AuthenticateUser authUserVM);
     }

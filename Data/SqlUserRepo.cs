@@ -24,6 +24,10 @@ namespace CSP.Data
         public User GetUserById(int id){ 
             return _context.Users.FirstOrDefault(p=> p.Id==id);
         }
+          IEnumerable<User> GetAllUsers()
+        {
+  return _context.Users.ToList();       
+        }
          public User GetUserByName(string name){ 
             return _context.Users.FirstOrDefault(p=> p.Username==name);
         }
@@ -33,6 +37,7 @@ namespace CSP.Data
         public User GetUserByPhone(string name){ 
             return _context.Users.FirstOrDefault(p=> p.Phone==name);
         }
+        
         public async Task<User> AddAsync(User user)
         {
             try
@@ -97,5 +102,18 @@ namespace CSP.Data
         {
           return (_context.SaveChanges() >= 0);
         }
+
+        IEnumerable<User> IUserRepo.GetAllUsers()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IUserRepo.DeleteUser(User usr)
+        {
+ if(usr==null){
+            throw new ArgumentNullException(nameof(usr));
+
+          }
+          _context.Users.Remove(usr);        }
     }
 }

@@ -44,9 +44,14 @@ namespace CSP
             services.AddScoped<IUserRepo, SqlUserRepo>();
             services.AddScoped<ITicketRepo, SqlTicketRepo>();
             services.AddScoped<IRequestRepo, SqlRequestRepo>();
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    }));
 
-            // services.AddScoped<IAlbumRepo, SqlAlbumRepo>();
-            // services.AddScoped<IArtistRepo, SqlArtistRepo>();
+           
              services.AddAuthentication(options => 
             {
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -106,7 +111,12 @@ namespace CSP
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors("MyPolicy");
 
+    // ...
+
+    // This should always be called last to ensure that
+    // middleware is registered in the correct order.
              app.UseAuthentication();
             app.UseAuthorization();
             app.UseSwagger();
@@ -119,6 +129,8 @@ namespace CSP
             {
                 endpoints.MapControllers();
             });
+                // app.UseMvc();
+
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using CSP.Data;
@@ -24,8 +25,7 @@ namespace CSP.Controllers
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        [HttpPost]
-        [Route("CreateAccount")]
+        [HttpPost("csp/user")]
         public async Task<User> CreateAccount([FromBody] CreateUserAccount userVM)
         {
          
@@ -42,12 +42,27 @@ namespace CSP.Controllers
 
             return await this._userService.AddAsync(user);
         }
+
+            /// <summary>
+        /// Get all requests
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("csp/users")]
+      public ActionResult <IEnumerable<User>> GetAllUsers()
+      {
+          var reqItems = _userService.GetAllAsync();
+        //    var requests= _mapper.Map<IEnumerable<CreateUserAccount>>(reqItems);
+
+
+               
+          return Ok(reqItems);
+      }
                /// Update an account
         /// </summary>
         /// <param name="number"></param>
         /// <returns></returns>
     
-    [HttpPatch("/UpdateUser/{username}")]
+    [HttpPatch("/createupdateuser/{username}")]
     public ActionResult PartialOrganizationUpdate(string username, JsonPatchDocument<CreateUserAccount> patchDoc)
 {
       var orgModelFromRepo = _userService.GetUserByName(username);
@@ -66,6 +81,41 @@ namespace CSP.Controllers
       return Ok("Updated Successfully");
 
 }
-
+  /// <summary>
+        /// Get a User by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+    //   GET api/songs/$
+      [HttpGet("csp/user/{id}")]
+      public ActionResult <CreateUserAccount> GetUserById(int id)
+      {
+          var reqItem = _userService.GetUserById(id);
+          if(reqItem==null){
+               return NotFound("The User could not be found.");
+          }
+          var getReq=_mapper.Map<CreateUserAccount>(reqItem);
+      
+          return Ok(getReq);
+          
+      }
+      /// <summary>
+        /// Delete a Ticket using its Ticket Number
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+// DELETE api/Organization/{id}
+[HttpDelete("/csp/user/{userid}")]
+public ActionResult DeleteUserbyId(int id)
+{
+    var toBeDeleted= _userService.GetUserById(id);
+  if(toBeDeleted==null){
+      return NotFound("User not found!");
+  }
+        _userService.DeleteUser(toBeDeleted);
+    _userService.SaveChanges();
+      
+    return Ok("Deleted Successfully");
+}
     }
 }
