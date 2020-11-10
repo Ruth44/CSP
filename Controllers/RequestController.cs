@@ -39,7 +39,7 @@ private readonly IUserRepo _userService;
         /// <param name="userId"></param>
         /// <returns></returns>
     //   POST api/songs
-    [HttpPost("request/{userId}")]
+    [HttpPost("csp/request/{userId}")]
     public ActionResult <CreateRequest> CreateNewRequest(int userId,CreateRequest req){
 int id=_repository2.GetServiceByName(req.ServiceName).Id;
          var reqModel = _mapper.Map<Request>(req);
@@ -57,7 +57,7 @@ int id=_repository2.GetServiceByName(req.ServiceName).Id;
         /// Get all requests
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("csp/requests")]
       public ActionResult <IEnumerable<GetRequest>> GetAllRequests()
       {
           var reqItems = _request.GetAllRequests();
@@ -81,7 +81,7 @@ foreach(var req in requestss)
         /// <returns></returns>
        //PATCH api/CSP/{id}
     
-    [HttpPatch("/ById/{id}")]
+    [HttpPatch("/csp/request/byid/{id}")]
     public ActionResult PartialOrganizationUpdate(int id, JsonPatchDocument<CreateRequest> patchDoc)
 {
       var orgModelFromRepo = _request.GetRequestById(id);
@@ -106,7 +106,7 @@ foreach(var req in requestss)
         /// <param name="name"></param>
         /// <returns></returns>
     //   GET api/songs/$
-      [HttpGet("/ByServiceName/{name}")]
+      [HttpGet("/csp/request/byname/{name}")]
       public ActionResult <GetRequest> GetRequestbySername(string name)
       {
            var serId=_repository2.GetServiceByName(name).Id;
@@ -131,7 +131,7 @@ foreach(var req in requestss)
         /// <param name="id"></param>
         /// <returns></returns>
     //   GET api/songs/$
-      [HttpGet("/ByID/{id}")]
+      [HttpGet("/csp/request/byid/{id}")]
       public ActionResult <GetRequest> GetRequestById(int id)
       {
           var reqItem = _request.GetRequestById(id);
@@ -152,7 +152,7 @@ foreach(var req in requestss)
         /// <param name="name"></param>
         /// <returns></returns>
     //   GET api/songs/$
-      [HttpGet("/ByUserName/{name}")]
+      [HttpGet("/csp/request/byname/{name}")]
        public ActionResult <GetRequest> GetRequestbyUsername(string name)
       {
            var serId=_userService.GetUserByName(name).Id;
@@ -178,7 +178,7 @@ foreach(var req in requestss)
         /// </summary>
         /// <param name="reqUpdate"></param>
         /// <returns></returns>
-    [HttpPut("/ById/{id}")]
+    [HttpPut("/csp/request/byid/{id}")]
     public ActionResult UpdateRequestById(int id, CreateRequest reqUpdate)
     {
         var reqModelFromRepo = _request.GetRequestById(id);
@@ -198,7 +198,7 @@ foreach(var req in requestss)
         /// <returns></returns>
 
 // DELETE api/Organization/{id}
-[HttpDelete("/DeletebyId/{id}")]
+[HttpDelete("/csp/request/byid/{id}")]
 public ActionResult DeleteRequestbyId(int id)
 {
     var toBeDeleted= _request.GetRequestById(id);

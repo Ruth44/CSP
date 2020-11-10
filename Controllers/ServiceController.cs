@@ -46,7 +46,7 @@ private readonly IUserRepo _userService;
         /// <param name="name"></param>
         /// <returns></returns>
     //   GET api/songs/$
-      [HttpGet("/ByName/{name}")]
+      [HttpGet("/csp/service/byname/{name}")]
       public ActionResult <GetServices> GetServiceByName(string name)
       {
           var reqItem = _repository2.GetServiceByName(name);
@@ -70,7 +70,7 @@ private readonly IUserRepo _userService;
         /// <param name="name"></param>
         /// <returns></returns>
     //   GET api/songs/$
-      [HttpGet("/ByOrganizationName/{name}")]
+      [HttpGet("/csp/service/byorg/{name}")]
       public ActionResult <CreateServices> GetServiceByOrgName(string name)
       {
           var orgId=_repository.GetOrganizationByName(name).Id;
@@ -93,7 +93,7 @@ private readonly IUserRepo _userService;
         /// <param name="id"></param>
         /// <returns></returns>
     //   GET api/songs/$
-      [HttpGet("/ById/{id}")]
+      [HttpGet("/csp/service/byid/{id}")]
       public ActionResult <GetServices> GetServiceById(int id)
       {
           var reqItem = _repository2.GetServiceById(id);
@@ -117,7 +117,7 @@ private readonly IUserRepo _userService;
         /// Get all requests
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("csp/services")]
       public ActionResult <IEnumerable<GetServices>> GetAllServices()
       {
           var reqItems = _repository2.GetAllServices();
@@ -145,7 +145,7 @@ return Ok(requests);
         /// <param name="org"></param>
         /// <returns></returns>
     //   POST api/songs
-    [HttpPost("service/{name}")]
+    [HttpPost("csp/service/byorgname/{name}")]
     public ActionResult <CreateServices> CreateNewService(string name,CreateServices ser){
 int id=_repository.GetOrganizationByName(name).Id;
          var serModel = _mapper.Map<Service>(ser);
@@ -172,7 +172,7 @@ int id=_repository.GetOrganizationByName(name).Id;
         /// <param name="serUpdate"></param>
         /// <returns></returns>
     //PUT api/CSP/{id}
-    [HttpPut("/ByID/{id}")]
+    [HttpPut("/csp/service/byid/{id}")]
     public ActionResult UpdateServiceById(int id, CreateServices serUpdate)
     {
         var serModelFromRepo = _repository2.GetServiceById(id);
@@ -191,7 +191,7 @@ int id=_repository.GetOrganizationByName(name).Id;
         /// <param name="serUpdate"></param>
         /// <returns></returns>
     //PUT api/CSP/hh/{}
-    [HttpPut("/ByServiceName/{service_name}")]
+    [HttpPut("/csp/service/byname/{service_name}")]
     public ActionResult UpdateServiceByName(string service_name, CreateServices serUpdate)
     {
         var serModelFromRepo = _repository2.GetServiceByName(service_name);
@@ -211,7 +211,7 @@ int id=_repository.GetOrganizationByName(name).Id;
         /// <returns></returns>
        //PATCH api/CSP/{id}
     
-    [HttpPatch("/Request/{name}")]
+    [HttpPatch("/csp/service/byname/{name}")]
     public ActionResult PartialServiceUpdate(string name, JsonPatchDocument<ReadServices> patchDoc)
 {
       var orgModelFromRepo = _repository2.GetServiceByName(name);
@@ -239,7 +239,7 @@ int id=_repository.GetOrganizationByName(name).Id;
         /// <param name="id"></param>
         /// <returns></returns>
 // DELETE api/Organization/{id}
-[HttpDelete("/ById/{id}")]
+[HttpDelete("/csp/service/byid/{id}")]
 public ActionResult DeleteServicebyId(int id)
 {
     var toBeDeleted= _repository2.GetServiceById(id);

@@ -62,7 +62,7 @@ namespace CSP.Controllers
         /// <param name="number"></param>
         /// <returns></returns>
     
-    [HttpPatch("/createupdateuser/{username}")]
+    [HttpPatch("/csp/user/{username}")]
     public ActionResult PartialOrganizationUpdate(string username, JsonPatchDocument<CreateUserAccount> patchDoc)
 {
       var orgModelFromRepo = _userService.GetUserByName(username);

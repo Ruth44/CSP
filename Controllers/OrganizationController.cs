@@ -75,7 +75,7 @@ if(orgData==null){
         /// <returns></returns>
     //PUT api/CSP/{id}
     [HttpPut]
-    [Route("csp/organizations/UpdateById/{id}")]
+    [Route("csp/organization/byid/{id}")]
     public ActionResult UpdateOrganizationById(int id, ReadOrganizations orgUpdate)
     {
         var orgModelFromRepo = _repository.GetOrganizationById(id);
@@ -94,7 +94,7 @@ if(orgData==null){
        //PATCH api/CSP/{id}
     
     [HttpPatch]
-        [Route("csp/organizations/PartialUpdateById/{id}")]
+        [Route("csp/organization/byid/{id}")]
 
     public ActionResult PartialOrganizationUpdate(int id, JsonPatchDocument<ReadOrganizations> patchDoc)
 {
@@ -120,7 +120,7 @@ if(orgData==null){
         /// <param name="orgUpdate"></param>
         /// <returns></returns>
     //PUT api/CSP/hh/{}
-    [HttpPut("csp/organization/UpdatebyName/{organization_name}")]
+    [HttpPut("csp/organization/byname/{organization_name}")]
     public ActionResult UpdateOrganizationByName(string organization_name, ReadOrganizations orgUpdate)
     {
         var orgModelFromRepo = _repository.GetOrganizationByName(organization_name);
@@ -138,7 +138,7 @@ if(orgData==null){
         /// <param name="id"></param>
         /// <returns></returns>
 // DELETE api/Organization/{id}
-[HttpDelete("csp/organization/DeleteById/{id}")]
+[HttpDelete("csp/organization/byid/{id}")]
 public ActionResult DeleteOrganizationbyId(int id)
 {
     var toBeDeleted= _repository2.GetServiceByOrganization(id);
@@ -161,7 +161,7 @@ public ActionResult DeleteOrganizationbyId(int id)
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-[HttpDelete("csp/organization/DeletebyName/{name}")]
+[HttpDelete("csp/organization/byname/{name}")]
 public ActionResult DeleteOrganizationbyName(string name)
 {
     var orgId= _repository.GetOrganizationByName(name).Id;

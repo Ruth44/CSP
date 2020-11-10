@@ -17,7 +17,7 @@ namespace CSP.Controllers
         {
             _authService = authService;
         }
-        [HttpPost("/Authenticate")]
+        [HttpPost("csp/Authenticate")]
         public async Task<AuthenticatedUserResult> Authenticate([FromBody] AuthenticateUser authUserVM)
         {
             try

@@ -51,7 +51,7 @@ private readonly IUserRepo _userService;
         /// <param name="Ticket_number"></param>
         /// <returns></returns>
     //   GET api/songs/$
-      [HttpGet("/ByTicketNumber/{Ticket_number}")]
+      [HttpGet("/csp/ticket/byticket/{Ticket_number}")]
       public ActionResult <GetTicket> GetTicketByNumber(int Ticket_number)
       {
           var reqItem = _ticket.GetTicketByNumber(Ticket_number);
@@ -75,7 +75,7 @@ private readonly IUserRepo _userService;
         /// <param name="name"></param>
         /// <returns></returns>
     //   GET api/songs/$
-      [HttpGet("/ByServicename/{name}")]
+      [HttpGet("/csp/ticket/byname/{name}")]
       public ActionResult <CreateServices> GetTicketsBySerName(string name)
       {
           var serId=_repository2.GetServiceByName(name).Id;
@@ -101,7 +101,7 @@ foreach(var req in requestss)
         /// <param name="name"></param>
         /// <returns></returns>
     //   GET api/songs/$
-      [HttpGet("/ByuserName/{name}")]
+      [HttpGet("/csp/ticket/byname/{name}")]
       public ActionResult <CreateServices> GetTicketsByUserName(string name)
       {
                    var uId=_userService.GetUserByName(name).Id;
@@ -131,7 +131,7 @@ foreach(var req in requestss)
         /// Get all tickets
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("csp/tickets/")]
       public ActionResult <IEnumerable<GetTicket>> GetAllTickets()
       {
           var reqItems = _ticket.GetAllTickets();
@@ -164,7 +164,7 @@ foreach(var req in requestss)
         /// <param name="userId"></param>
         /// <returns></returns>
     //   POST api/songs
-    [HttpPost("ticket/{userId}")]
+    [HttpPost("/csp/ticket/{userId}")]
     public ActionResult <CreateTicket> CreateNewTicket(int userId,CreateTicket tic){
 
          var ticModel = _mapper.Map<Ticket>(tic);
@@ -189,7 +189,7 @@ foreach(var req in requestss)
         /// <param name="ticUpdate"></param>
         /// <returns></returns>
     //PUT api/CSP/{id}
-    [HttpPut("/ByTicketnumber/{ticket_number}")]
+    [HttpPut("/csp/ticket/byticket/{ticket_number}")]
     public ActionResult UpdateTicketById(int ticket_number, CreateTicket ticUpdate)
     {
         var ticModelFromRepo = _ticket.GetTicketByNumber(ticket_number);
@@ -213,7 +213,7 @@ foreach(var req in requestss)
         /// <returns></returns>
        //PATCH api/CSP/{id}
     
-    [HttpPatch("/TicketNumber/{number}")]
+    [HttpPatch("/csp/ticket/bynumber/{number}")]
     public ActionResult PartialOrganizationUpdate(int id, JsonPatchDocument<CreateTicket> patchDoc)
 {
       var orgModelFromRepo = _ticket.GetTicketByNumber(id);
@@ -246,7 +246,7 @@ foreach(var req in requestss)
         /// <param name="id"></param>
         /// <returns></returns>
 // DELETE api/Organization/{id}
-[HttpDelete("/ByTicketNumber/{ticket_number}")]
+[HttpDelete("/csp/ticket/byticket/{ticket_number}")]
 public ActionResult DeleteTicketbyNumber(int ticket_number)
 {
     var toBeDeleted= _ticket.GetTicketByNumber(ticket_number);
