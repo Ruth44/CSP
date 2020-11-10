@@ -75,7 +75,7 @@ private readonly IUserRepo _userService;
         /// <param name="name"></param>
         /// <returns></returns>
     //   GET api/songs/$
-      [HttpGet("/csp/ticket/byname/{name}")]
+      [HttpGet("/csp/ticket/byservicename/{name}")]
       public ActionResult <CreateServices> GetTicketsBySerName(string name)
       {
           var serId=_repository2.GetServiceByName(name).Id;
@@ -101,7 +101,7 @@ foreach(var req in requestss)
         /// <param name="name"></param>
         /// <returns></returns>
     //   GET api/songs/$
-      [HttpGet("/csp/ticket/byname/{name}")]
+      [HttpGet("/csp/ticket/byusername/{name}")]
       public ActionResult <CreateServices> GetTicketsByUserName(string name)
       {
                    var uId=_userService.GetUserByName(name).Id;

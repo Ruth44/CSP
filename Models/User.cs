@@ -22,8 +22,12 @@ namespace CSP.Models
          public string Email { get; set; }
                  [Required]
                     [StringLength(15)]
+                             public string Phone { get; set; }
 
-         public string Phone { get; set; }
+                                     [Required]
+
+        public bool isAdmin {get;set;}
+
                  [Required]
 [MaxLength(6) , MinLength(1)]
          public string Gender { get; set; }

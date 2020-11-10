@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CSP.Migrations
 {
     [DbContext(typeof(CSPContext))]
-    [Migration("20201110165919_initialMigration")]
+    [Migration("20201110212425_initialMigration")]
     partial class initialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -171,6 +171,9 @@ namespace CSP.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(30)")
                         .HasMaxLength(30);
+
+                    b.Property<bool>("isAdmin")
+                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("Id");
 

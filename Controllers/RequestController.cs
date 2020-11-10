@@ -152,7 +152,7 @@ foreach(var req in requestss)
         /// <param name="name"></param>
         /// <returns></returns>
     //   GET api/songs/$
-      [HttpGet("/csp/request/byname/{name}")]
+      [HttpGet("/csp/request/byusername/{name}")]
        public ActionResult <GetRequest> GetRequestbyUsername(string name)
       {
            var serId=_userService.GetUserByName(name).Id;

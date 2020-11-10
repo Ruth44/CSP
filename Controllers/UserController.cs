@@ -36,7 +36,9 @@ namespace CSP.Controllers
                 Fullname = userVM.Fullname,
                 Email=userVM.Email,
                 Gender=userVM.Gender,
-                Phone=userVM.Phone
+                Phone=userVM.Phone,
+                isAdmin=userVM.isAdmin
+                
             };
 
 

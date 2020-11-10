@@ -33,6 +33,7 @@ namespace CSP.Migrations
                     Fullname = table.Column<string>(nullable: false),
                     Email = table.Column<string>(maxLength: 40, nullable: false),
                     Phone = table.Column<string>(maxLength: 15, nullable: false),
+                    isAdmin = table.Column<bool>(nullable: false),
                     Gender = table.Column<string>(maxLength: 6, nullable: false)
                 },
                 constraints: table =>

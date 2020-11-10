@@ -18,6 +18,8 @@ namespace CSP.ViewModels
         
         [Required]
          public string Phone { get; set; }
+         [Required]
+         public bool isAdmin { get; set; }
                  [Required]
 
          public string Gender { get; set; }
