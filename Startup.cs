@@ -33,7 +33,10 @@ namespace CSP
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<CSPContext>(opt => opt.UseMySQL(Configuration.GetConnectionString("CSPConnection")));
+            services.AddDbContext<CSPContext>(opt => opt.UseMySQL(Configuration.GetConnectionString("CSPConnection"),
+            MySQLOptionsAction: sqlOptions => {
+                sqlOptions.CommandTimeout(60);
+            }));
             services.AddControllers().AddNewtonsoftJson(s => {
                 s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });
@@ -107,7 +110,6 @@ namespace CSP
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseHttpsRedirection();
 
             app.UseRouting();
