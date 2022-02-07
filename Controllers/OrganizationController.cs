@@ -10,8 +10,10 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CSP.Controllers
 {
-[Route("api/organiation")]
+  
+    [Route("api/organiation")]
     [ApiController]
+    [Authorize]
     public class OrganizationController: ControllerBase
     {
             private readonly IOrganizationRepo _repository;
@@ -37,6 +39,7 @@ private readonly IUserRepo _userService;
         /// </summary>
         /// <returns></returns>
         // [Authorize]
+        [AllowAnonymous]
         [HttpGet]
         [Route("csp/organizations")]
       public ActionResult <IEnumerable<ReadOrganizations>> GetAllOrganizations()
@@ -52,7 +55,7 @@ private readonly IUserRepo _userService;
     //   POST api/songs
     [HttpPost]
     [Route("csp/organizations")]
-    // [Authorize]
+    [Authorize]
     public ActionResult <ReadOrganizations> CreateOrganization(ReadOrganizations org){
         var orgData=_repository.GetOrganizationByName(org.Name);
 if(orgData==null){

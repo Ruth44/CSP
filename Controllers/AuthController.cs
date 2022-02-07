@@ -4,11 +4,14 @@ using System.Threading.Tasks;
 using CSP.Data;
 using CSP.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace CSP.Controllers
 {
     [Route("api/auth")]
     [ApiController]
+    [AllowAnonymous]
     public class AuthController
     {
           private readonly IAuthRepo _authService;

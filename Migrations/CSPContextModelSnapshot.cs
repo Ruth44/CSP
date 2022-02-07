@@ -156,6 +156,9 @@ namespace CSP.Migrations
                         .HasColumnType("varchar(6)")
                         .HasMaxLength(6);
 
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("text");
@@ -169,9 +172,6 @@ namespace CSP.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(30)")
                         .HasMaxLength(30);
-
-                    b.Property<bool>("isAdmin")
-                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("Id");
 

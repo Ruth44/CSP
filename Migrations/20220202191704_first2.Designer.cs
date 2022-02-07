@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CSP.Migrations
 {
     [DbContext(typeof(CSPContext))]
-    [Migration("20201110212425_initialMigration")]
-    partial class initialMigration
+    [Migration("20220202191704_first2")]
+    partial class first2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -158,6 +158,9 @@ namespace CSP.Migrations
                         .HasColumnType("varchar(6)")
                         .HasMaxLength(6);
 
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("text");
@@ -171,9 +174,6 @@ namespace CSP.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(30)")
                         .HasMaxLength(30);
-
-                    b.Property<bool>("isAdmin")
-                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("Id");
 

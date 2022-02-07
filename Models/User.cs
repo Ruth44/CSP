@@ -26,7 +26,7 @@ namespace CSP.Models
 
                                      [Required]
 
-        public bool isAdmin {get;set;}
+        public bool IsAdmin {get;set;}
 
                  [Required]
 [MaxLength(6) , MinLength(1)]

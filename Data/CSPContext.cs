@@ -8,12 +8,12 @@ namespace CSP.Data
         public CSPContext(DbContextOptions<CSPContext> opt): base(opt){
 
         }
-        public DbSet<Organization> Organizations{get; set; }
-        public DbSet<Service> Services{get;set;}
+        public virtual DbSet<Organization> Organizations{get; set; }
+        public virtual DbSet<Service> Services{get;set;}
         
-         public DbSet<Ticket> Tickets{get;set;}
-                  public DbSet<Request> Requests{get;set;}
-                  public DbSet<User> Users{get;set;}
+         public virtual DbSet<Ticket> Tickets{get;set;}
+                  public virtual DbSet<Request> Requests{get;set;}
+                  public virtual DbSet<User> Users{get;set;}
 
     }
 }

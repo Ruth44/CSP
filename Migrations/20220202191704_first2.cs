@@ -4,7 +4,7 @@ using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace CSP.Migrations
 {
-    public partial class initialMigration : Migration
+    public partial class first2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -33,7 +33,7 @@ namespace CSP.Migrations
                     Fullname = table.Column<string>(nullable: false),
                     Email = table.Column<string>(maxLength: 40, nullable: false),
                     Phone = table.Column<string>(maxLength: 15, nullable: false),
-                    isAdmin = table.Column<bool>(nullable: false),
+                    IsAdmin = table.Column<bool>(nullable: false),
                     Gender = table.Column<string>(maxLength: 6, nullable: false)
                 },
                 constraints: table =>

@@ -1,4 +1,3 @@
-C:\Users\Ruth\Documents\Gebeya\DotNet\CSP\obj\Debug\netcoreapp3.1\CSP.csprojAssemblyReference.cache
 C:\Users\Ruth\Documents\Gebeya\DotNet\CSP\obj\Debug\netcoreapp3.1\staticwebassets\CSP.StaticWebAssets.Manifest.cache
 C:\Users\Ruth\Documents\Gebeya\DotNet\CSP\obj\Debug\netcoreapp3.1\staticwebassets\CSP.StaticWebAssets.xml
 C:\Users\Ruth\Documents\Gebeya\DotNet\CSP\obj\Debug\netcoreapp3.1\CSP.MvcApplicationPartsAssemblyInfo.cs
